@@ -24,6 +24,10 @@ func ReadFile() {
 	if err != nil {
 		fmt.Println(err)
 	}
+	for i, record := range Records {
+		Records[i].Owner = GetOwnerById(record.OwnerId)
+	}
+
 }
 
 func ClearScreen() {
@@ -35,7 +39,7 @@ func login(name string, password string) User {
 		if user.Name == name && user.Password == password {
 			fmt.Println("hey", user)
 			return user
-		} 
+		}
 	}
 	return User{}
 }
@@ -61,6 +65,17 @@ func SaveUsers(user User) {
 
 func SaveRecords(record Record) {
 	Records = append(Records, record)
+	file, err := json.MarshalIndent(Records, "", "\t")
+	if err != nil {
+		fmt.Println(err)
+	}
+	err = os.WriteFile("./data/record.json", file, 0644)
+	if err != nil {
+		fmt.Println(err)
+	}
+}
+
+func UpdateRecords() {
 	file, err := json.MarshalIndent(Records, "", "\t")
 	if err != nil {
 		fmt.Println(err)
@@ -99,4 +114,66 @@ func CreateAccount(user *User) {
 	ClearScreen()
 	fmt.Println("Account created successfully")
 	fmt.Println("-----------------------------")
+}
+
+func (record *Record) Deposit(amount float64) {
+	record.Amount += amount
+}
+
+func (record *Record) Withdraw(amount float64) {
+	record.Amount -= amount
+}
+
+func (record *Record) Transfer(NewOwner User) {
+	record.Owner = NewOwner
+	record.OwnerId = NewOwner.Id
+}
+
+func (record *Record) Delete() {
+	for i := 0; i < len(Records); i++ {
+		if Records[i].Id == record.Id {
+			Records = append(Records[:i], Records[i+1:]...)
+			UpdateRecords()
+		}
+	}
+}
+
+func GetOwnerById(id int) User {
+	for _, user := range Users {
+		if user.Id == id {
+			return user
+		}
+	}
+	return User{}
+}
+
+func Exit(user *User) {
+	var Choice int
+	fmt.Println("[1] Exit")
+	fmt.Println("[2] Return to the main menu")
+	fmt.Scanln(&Choice)
+	switch Choice {
+	case 1:
+		os.Exit(0)
+	case 2:
+		ClearScreen()
+		fmt.Println("Welcome:", user.Name)
+		fmt.Println("-----------------------------")
+		MainMenu(user)
+	}
+}
+
+func CheckAllAccount(user *User) {
+	for _, record := range Records {
+		if record.OwnerId == user.Id {
+			fmt.Println("AccountNumber:", record.AccountNumber)
+			fmt.Println("CreationDate:", record.CreationDate)
+			fmt.Println("Country:", record.Country)
+			fmt.Println("PhoneNumber:", record.PhoneNumber)
+			fmt.Println("Amount:", record.Amount)
+			fmt.Println("AccountType:", record.AccountType)
+			fmt.Println("-------------------------")
+		}
+	}
+	Exit(user)
 }
