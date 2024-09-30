@@ -177,3 +177,12 @@ func CheckAllAccount(user *User) {
 	}
 	Exit(user)
 }
+
+func CheckAllAccountNumberOfUser(user *User) {
+	for _, record := range Records {
+		if record.OwnerId == user.Id {
+			fmt.Println("AccountNumber:", record.AccountNumber)
+			fmt.Println("-------------------------")
+		}
+	}
+}

@@ -1,22 +1,12 @@
 [
 	{
-		"Id": 1,
-		"OwnerId": 1,
-		"AccountNumber": 123456789,
-		"CreationDate": "2023-01-01",
-		"Country": "France",
-		"PhoneNumber": "+33123456789",
-		"Amount": 23116.75,
-		"AccountType": "Savings"
-	},
-	{
 		"Id": 2,
-		"OwnerId": 2,
+		"OwnerId": 1,
 		"AccountNumber": 987654321,
 		"CreationDate": "2023-02-01",
 		"Country": "France",
 		"PhoneNumber": "+33198765432",
-		"Amount": 2500.5,
+		"Amount": 1129.5,
 		"AccountType": "Fixed01"
 	},
 	{
@@ -46,7 +36,7 @@
 		"CreationDate": "2024-09-26",
 		"Country": "France",
 		"PhoneNumber": "0987654321",
-		"Amount": 7890,
+		"Amount": 8635,
 		"AccountType": "Saving"
 	}
 ]
